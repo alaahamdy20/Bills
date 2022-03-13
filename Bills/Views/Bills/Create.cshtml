@@ -1,0 +1,421 @@
+﻿@model Bills.Models.ModelView.BillView
+@{
+    ViewData["Title"] = "Create";
+
+}
+       <section id="horizontal-form-layouts">
+                        <div class="row">
+                         
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title-wrap bar-success">
+                                            <h4 class="card-title" id="horz-layout-basic">Sales Invoice</h4>
+                                        </div>
+                                        <p class="mb-0">This is the basic horizontal form with labels on left and cost estimation form is the default position.</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="px-3">
+                                           @* <form class="form form-horizontal" asp-action="Create">*@
+                                                <div class="form-body">
+                                                    <h4 class="form-section" style="border-bottom: 1px dashed #949090;    line-height: 3rem;    margin-bottom: 1.5rem;">
+                                                        <i class="icon-user"></i> Bills Details</h4>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control"asp-for="BillDate" ></label>
+                                                        <div class="col-md-9">
+                                                            <input asp-for="BillDate" id="BillDate" class="form-control"  >
+                                                            <span id="lBillDate" asp-validation-for="BillDate" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control" asp-for="BillId" ></label>
+                                                        <div class="col-md-9">
+                                                            <input  asp-for="BillId" id="Id" class="form-control" readonly>
+															 <span asp-validation-for="BillId" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control"  asp-for="ClintId" ></label>
+                                                        <div class="col-md-9">
+                                                            <select asp-for="ClintId" id="ClintId" asp-items="ViewBag.ClintId" class="form-control">
+                                                                <option value="0" selected="" >Choose From Clients </option>
+                                                            </select>
+                                                             <span id="lClintId" asp-validation-for="ClintId" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+ @*---------------------------------------------------------------Items Details--------------------------------------------------------------------*@
+                                                    
+                                                  <h4 class="form-section" style="border-bottom: 1px dashed #949090;    line-height: 3rem;    margin-bottom: 1.5rem;">
+                                                        <i class="icon-user"></i> Items Details</h4>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control" asp-for="BillItemView.ItemCode"> </label>
+                                                        <div class="col-md-9">
+                                                             <select asp-for="BillItemView.ItemCode" id="ItemCode" asp-items="ViewBag.ItemId" class="form-control"  onchange="showSellingPrice(this)">
+                                                                <option value="0" selected="" >Choose From Items </option>
+                                                            </select>
+                                                             <span id="lItemCode" asp-validation-for="BillItemView.ItemCode" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control" asp-for="BillItemView.SellingPrice"></label>
+                                                        <div class="col-md-9">
+                                                            <input id="price"  asp-for="BillItemView.SellingPrice" class="form-control"  onchange="addToTotal2(this)" >
+															    <span  asp-validation-for="BillItemView.SellingPrice" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    
+
+                                                       <div class="form-group row">
+                                                            <label class="col-md-3 label-control" asp-for="BillItemView.Quantity" ></label>
+                                                            <div class="col-md-9">
+                                                                <input  asp-for="BillItemView.Quantity" id="Quantity" class="form-control"  onchange="addToTotal(this)" >
+															        <span id="lQuantity" asp-validation-for="BillItemView.Quantity" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-md-3 label-control" asp-for="BillItemView.TotalBalance" ></label>
+                                                            <div class="col-md-9">
+                                                                <input id="total"  asp-for="BillItemView.TotalBalance" disabled class="form-control" >
+															    <span asp-validation-for="BillItemView.TotalBalance" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+                    
+                                                  
+                    
+                                                	<div class="form-actions" style="border-top:none">
+
+														    <button class="btn btn-success"  type="submit" onclick="addBillItem(this)">
+															    <i class="icon-note"></i> add
+														    </button>
+													</div>
+                                                    </div>
+                                           @* </form>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </section>
+   @*--------------------------------------------------------------- body --------------------------------------------------------------------*@
+                  
+                           <section id="horizontal-form-layouts">
+                        <div class="row">
+                         
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title-wrap bar-success">
+                                               <h4 class="form-section" style="border-bottom: 1px dashed #949090;    line-height: 3rem;    margin-bottom: .5rem;">
+                                                        <i class="icon-user"></i> Bills Items </h4>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="px-3">
+                                         <table class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr style="text-align: center;" >
+                                                                <th> Item Code</th>
+                                                                <th>Item name</th>
+                                                                <th>Unit</th>
+                                                                <th>Quantity</th>
+                                                                <th>Selling Price</th>
+                                                                <th>Total Balance</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                    @if (@Model.listItemView!=null)
+                                                   {
+                                                       <h1>ssfasf</h1>
+                                                   }  
+                                                        <tbody id="tableItem">
+                                                            
+	                                                        <tr>
+		                                                        <td></td >
+                                                                <td></td >
+		                                                        <td></td >
+                                                                <td></td >
+		                                                        <td></td >
+                                                                <td></td >
+                                                            </tr>
+                                                        </tbody>
+                                         
+                                                       
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    
+                    </section>
+   @*--------------------------------------------------------------- footter --------------------------------------------------------------------*@
+                  
+                    
+                           <section id="horizontal-form-layouts">
+                        <div class="row">
+                         
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title-wrap bar-success">
+                                            <h4 class="form-section" style="border-bottom: 1px dashed #949090;    line-height: 3rem;    margin-bottom: 1.5rem;">
+                                                        <i class="icon-user"></i> Other Details</h4>
+                                        </div>
+                                        <p class="mb-0">This is the basic horizontal form with labels on left and cost estimation form is the default position.</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="px-3">
+                                            <form class="form form-horizontal" asp-action="saveDetails"  >
+                                                     <input asp-for="BillId"  hidden >
+
+                                                     
+
+                                                     <div class="form-group row">
+                                                        <label class="col-md-3 label-control"  asp-for="BillDetails.BillsTotal">Bills Total </label>
+                                                        <div class="col-md-9">
+                                                            <input id="billsTotal" asp-for="BillDetails.BillsTotal" readonly class="form-control" >
+                                                             <span asp-validation-for="BillDetails.BillsTotal" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                      <div class="form-group row">
+                                                        <label class="col-md-3 label-control"  asp-for="BillDetails.PercentageDiscount">Percentage Discount :</label>
+                                                        <div class="col-md-9">
+                                                            <input asp-for="BillDetails.PercentageDiscount" class="form-control" id="PercentageDiscount" onchange="PercentageDiscountCal(this)" >
+                                                             <span asp-validation-for="BillDetails.PercentageDiscount" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                      <div class="form-group row">
+                                                        <label class="col-md-3 label-control"  asp-for="BillDetails.ValueDiscount">Value Discount :</label>
+                                                        <div class="col-md-9">
+                                                            <input asp-for="BillDetails.ValueDiscount" class="form-control" id="ValueDiscount" onchange="ValueDiscountCal(this)" >
+                                                             <span asp-validation-for="BillDetails.ValueDiscount" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                       <div class="form-group row">
+                                                        <label class="col-md-3 label-control"  asp-for="BillDetails.TheNet"> The Net : </label>
+                                                        <div class="col-md-9">
+                                                            <input asp-for="BillDetails.TheNet" readonly class="form-control" id="TheNet"  validateRequest="false"  >
+                                                             <span asp-validation-for="BillDetails.TheNet" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                     <div class="form-group row">
+                                                        <label class="col-md-3 label-control"  asp-for="BillDetails.PaidUp"> Paid Up :</label>
+                                                        <div class="col-md-9">
+                                                            <input asp-for="BillDetails.PaidUp" class="form-control" id="PaidUp" onchange="PaidUpCal(this)" >
+                                                             <span asp-validation-for="BillDetails.PaidUp" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                     <div class="form-group row">
+                                                        <label class="col-md-3 label-control"  asp-for="BillDetails.TheRest">The Rest :</label>
+                                                        <div class="col-md-9">
+                                                            <input asp-for="BillDetails.TheRest" readonly class="form-control" id="TheRest"  validateRequest="false" >
+                                                        </div>
+                                                    </div>
+                                                   
+                                                	<div class="form-actions" style="border-top:none">
+														    <button class="btn btn-success"  type="submit">
+															    <i class="icon-note"></i> Save
+														    </button>
+													</div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    
+                    </section>
+
+<script>
+
+
+     function showSellingPrice(el){
+
+           let id = el.value;
+            let qu = document.getElementById("Quantity");
+           console.log(id)
+
+              $.ajax({
+                    url: "/Bills/showSellingPrice",
+                    data:{"id":id},
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    success: function(result){
+                         console.log(result)
+                     $("#price").val(result);
+                      $("#Quantity").val(0);
+                         },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+              });
+     }
+     function addToTotal(el){
+
+           let qu = el.value;
+           let price = document.getElementById("price");
+           console.log(price.value)
+
+              $.ajax({
+                    url: "/Bills/addToTotal",
+                    data:{"price":price.value , "qu":qu},
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    success: function(result){
+                         console.log(result)
+                     $("#total").val(result);
+                     },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+             });
+     }
+     function addToTotal2(el){
+          console.log(el)
+           let price = el.value;
+           let qu = document.getElementById("Quantity");
+          
+
+              $.ajax({
+                    url: "/Bills/addToTotal",
+                    data:{"price":price , "qu":qu.value},
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    success: function(result){
+                         console.log(result)
+                     $("#total").val(result);
+                     },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+             });
+     }
+     function addBillItem(el){
+
+            let BillDate = document.getElementById("BillDate");
+            let BillId = document.getElementById("Id");
+            let ClintId = document.getElementById("ClintId");
+            let ItemCode = document.getElementById("ItemCode");
+            let price = document.getElementById("price");
+            let Quantity = document.getElementById("Quantity");
+            let data = {"BillDate":BillDate.value ,
+                        "BillId":BillId.value,
+                        "ClintId":ClintId.value,
+                        "ItemCode":ItemCode.value,
+                        "price":price.value,
+                        "Quantity":Quantity.value }
+          
+
+              $.ajax({
+                url: "/Bills/addBillItem",
+                data:data,
+                contentType: "application/json; charset=utf-8",
+                success: function(result){
+                
+                
+                     if (result.status==false)
+                     {
+                         // datavalidation 
+                         if (result.date != null)
+                         {
+                            $("#lBillDate").text(result.date);
+                       
+                         }
+                         else{
+                            $("#lBillDate").text('');
+                         }
+                         // clint validation 
+                          if (result.clintError != null)
+                         {
+                          $("#lClintId").text(result.clintError);
+                         }else{  
+                            $("#lClintId").text('');
+                         }
+                         // itemcode validation 
+                         if (result.itemCode != null)
+                         {
+                           $("#lItemCode").text(result.itemCode);
+                         }else {
+                          $("#lItemCode").text('');
+                         }
+                         // quantity validation
+                         if (result.quantity != null)
+                         {
+                            $("#lQuantity").text(result.quantity);
+                         }else {
+                          $("#lQuantity").text('');
+                         }
+                     }
+                     else
+                     {
+                      console.log(result)
+                      $("#billsTotal").val(result.billView.billsTotal);
+                      $("#lBillDate").text('');
+                      $("#lItemCode").text('');
+                      $("#lClintId").text('');
+                      $("#lQuantity").text('');
+                      $("#tableItem").html(result.viewContent);
+                      
+                     }
+               
+             
+                 },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+             });
+     }
+     function ValueDiscountCal(el){
+            let VDiscount = el.value;
+            let total= document.getElementById('billsTotal');
+            let TNet = document.getElementById("TheNet");
+            console.log(total.value);
+            let num = total.value-VDiscount
+            $('#TheNet').val(num);
+            let percent = (VDiscount / total.value) * 100;
+            console.log(percent);
+            $('#PercentageDiscount').val(percent)
+     }
+     function PercentageDiscountCal(el){
+          let PDiscount = el.value;
+            let total= document.getElementById('billsTotal');
+            let TNet = document.getElementById("TheNet");
+            let num = total.value - ((PDiscount / 100) * total.value)
+            $('#TheNet').val(num);
+                let Dvalue = ((PDiscount / 100) * total.value);
+            $('#ValueDiscount').val(Dvalue)
+     }
+     function PaidUpCal(el){
+            let PaidUpV = el.value;
+            let TheRest= document.getElementById('TheRest');
+            let TNet = document.getElementById("TheNet");
+            let num = TNet.value - PaidUpV
+            $('#TheRest').val(num);
+     }
+
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,55 @@
+﻿@model Bills.Models.Entities.CompanyData
+
+@{
+    ViewData["Title"] = "Create";
+}
+         <section id="horizontal-form-layouts">
+                   
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title-wrap bar-success">
+                                            <h4 class="card-title" id="horz-layout-basic">Company Data Form</h4>
+                                        </div>
+                                        <p class="mb-0">This is the basic horizontal form with labels on left and cost estimation form is the default position.</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="px-3">
+                                            <form class="form form-horizontal" asp-action="Create">
+                                            
+                                    <div class="form-group row">
+                                                      <label asp-for="Name" class="col-md-3 label-control"></label>
+                                                        <div class="col-md-9">
+                                                           <input asp-for="Name" class="form-control" />
+                                                             <span asp-validation-for="Name" class="text-danger"></span>
+                                                        </div>
+                                                    </div>                    
+                                                    <div class="form-group row">
+                                                         <label asp-for="Notes" class="col-md-3 label-control"></label>
+                                                        <div class="col-md-9">
+                                                            <textarea  asp-for="Notes" rows="5" class="form-control" ></textarea>
+															 <span asp-validation-for="Notes" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+													<div class="form-actions" style="border-top:none">
+														<a asp-action="Index" asp-controller="Home" class="btn btn-danger mr-1">
+															<i class="icon-trash"></i> Cancel
+														</a>
+														<button class="btn btn-success"  type="submit">
+															<i class="icon-note"></i> Save
+														</button>
+													</div>
+                                                </form></div>
+                    
+                                               
+                                            
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

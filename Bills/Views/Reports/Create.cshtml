@@ -1,0 +1,58 @@
+﻿@model List<Bill>
+
+
+
+                        <div class="row">
+                         
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title-wrap bar-success">
+                                               <h4 class="form-section" style="border-bottom: 1px dashed #949090;    line-height: 3rem;    margin-bottom: .5rem;">
+                                                        <i class="icon-user"></i> Bills Items </h4>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="px-3">
+                                         <table class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr style="text-align: center;" >
+                                                                <th> Item Code</th>
+                                                                <th>Item name</th>
+                                                                <th>Unit</th>
+                                                                <th>Quantity</th>
+                                                                <th>Selling Price</th>
+                                                                <th>Total Balance</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                
+                                                        <tbody id="tableItem">
+                                                            
+	                                                        @foreach (Bill item in Model )
+                                                                {
+	                                                                <tr>
+
+		                                                                <td>@item.Id     </td >
+                                                                        <td>@item.ClintId     </td >
+		                                                                <td>@item.BillDetails?.BillId </td >
+                                                                        <td>@item.client?.Name     </td >
+                                                                        <td>@item.BillDetails?.TheRest    </td >
+                                                                        <td>@item.BillDetails?.BillsTotal     </td >
+                                                                    </tr>
+                                                              
+                                                                }
+                                                        </tbody>
+                                         
+                                                       
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    
+                   

@@ -1,0 +1,80 @@
+﻿@model Bills.Models.Entities.Client
+
+@{
+    ViewData["Title"] = "Create";
+}
+      <section id="horizontal-form-layouts">
+                   
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title-wrap bar-success">
+                                            <h4 class="card-title" id="horz-layout-basic">Clients</h4>
+                                        </div>
+                                        <p class="mb-0">This is the basic horizontal form with labels on left and cost estimation form is the default position.</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="px-3">
+                                           <form class="form form-horizontal" asp-action="Create" method="post">
+                                             
+                                                   <div class="form-group row">
+                                                        <label class="col-md-3 label-control" asp-for="Name" > </label>
+                                                        <div class="col-md-9">
+                                                            <input  asp-for="Name" class="form-control">
+															  <span asp-validation-for="Name" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control"  asp-for="Phone"> </label>
+                                                        <div class="col-md-9">
+                                                            <input  asp-for="Phone" class="form-control" >
+															 <span asp-validation-for="Phone" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                       <label class="col-md-3 label-control" asp-for="Id"  > </label>
+                                                        <div class="col-md-9">
+                                                          <input  asp-for="Id" class="form-control" disabled >
+															 <span asp-validation-for="Id" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-md-3 label-control" asp-for="Address" > </label>
+                                                        <div class="col-md-9">
+                                                            <input asp-for="Address"  class="form-control" >
+															<span asp-validation-for="Address" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+													
+													
+													<div class="form-actions" style="border-top:none">
+														<a asp-action="Index" asp-controller="Home" class="btn btn-danger mr-1">
+															<i class="icon-trash"></i> Cancel
+														</a>
+														<button class="btn btn-success"  type="submit">
+															<i class="icon-note"></i> Save
+														</button>
+													
+													</div>
+                                                @if (@TempData["alert"]!=null)
+                                               {
+                                                   <div class="alert alert-success" role="alert">
+                                                    @TempData["alert"]
+                                                    </div> 
+                                               }
+                                                   
+                                 
+                                                </form></div>
+                    
+                                              
+                                            
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

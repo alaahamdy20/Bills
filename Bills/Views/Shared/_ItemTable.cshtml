@@ -1,0 +1,17 @@
+﻿@using Bills.Models.Entities
+@model List<BillItemView>
+
+@foreach (BillItemView item in @Model )
+{
+	<tr>
+
+		<td>@item.ItemCode     </td >
+        <td>@item.ItemName     </td >
+		<td>@item.Unit         </td >
+        <td>@item.Quantity     </td >
+		<td>@item.SellingPrice </td >
+        <td>@item.TotalBalance </td >
+  
+
+    </tr>
+}

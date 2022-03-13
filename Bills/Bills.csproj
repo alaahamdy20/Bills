@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\Clients\**" />
+    <Compile Remove="Views\CompanyData\**" />
+    <Compile Remove="Views\Item\**" />
+    <Compile Remove="Views\Login\**" />
+    <Compile Remove="Views\SalesReport\**" />
+    <Compile Remove="Views\Sales\**" />
+    <Compile Remove="Views\TypeData\**" />
+    <Compile Remove="Views\Units\**" />
+    <Content Remove="Views\Clients\**" />
+    <Content Remove="Views\CompanyData\**" />
+    <Content Remove="Views\Item\**" />
+    <Content Remove="Views\Login\**" />
+    <Content Remove="Views\SalesReport\**" />
+    <Content Remove="Views\Sales\**" />
+    <Content Remove="Views\TypeData\**" />
+    <Content Remove="Views\Units\**" />
+    <EmbeddedResource Remove="Views\Clients\**" />
+    <EmbeddedResource Remove="Views\CompanyData\**" />
+    <EmbeddedResource Remove="Views\Item\**" />
+    <EmbeddedResource Remove="Views\Login\**" />
+    <EmbeddedResource Remove="Views\SalesReport\**" />
+    <EmbeddedResource Remove="Views\Sales\**" />
+    <EmbeddedResource Remove="Views\TypeData\**" />
+    <EmbeddedResource Remove="Views\Units\**" />
+    <None Remove="Views\Clients\**" />
+    <None Remove="Views\CompanyData\**" />
+    <None Remove="Views\Item\**" />
+    <None Remove="Views\Login\**" />
+    <None Remove="Views\SalesReport\**" />
+    <None Remove="Views\Sales\**" />
+    <None Remove="Views\TypeData\**" />
+    <None Remove="Views\Units\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Clients\Create.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_StyleLogin.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\Units\Create.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+</Project>
