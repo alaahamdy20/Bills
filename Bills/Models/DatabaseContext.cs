@@ -15,7 +15,6 @@ namespace Bills.Models
 
         public virtual DbSet<Bill> Bills { get; set; }
         public virtual DbSet<BillItem> BillItems { get; set; }
-        public virtual DbSet<BillDetails> BillDetails { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
     
@@ -42,10 +41,6 @@ namespace Bills.Models
                 .WithMany(s => s.CompanyTypes)
                 .HasForeignKey(sc => sc.TypeDataId);
 
-            builder.Entity<Bill>()
-               .HasOne(a => a.BillDetails)
-               .WithOne(b => b.bill)
-               .HasForeignKey<BillDetails>(b => b.BillId);
 
         }
      

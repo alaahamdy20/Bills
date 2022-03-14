@@ -22,30 +22,23 @@ namespace Bills.Models.Entities
         public int ClintId { get; set; }
         public virtual Client client { get; set; }
 
+        // bill details 
+        public float BillsTotal { get; set; }
 
-        public virtual BillDetails BillDetails { get; set; }
+
+        public float PercentageDiscount { get; set; }
+
+
+        public float ValueDiscount { get; set; }
+
+
+        public float TheNet { get; set; }
+
+        public float PaidUp { get; set; }
+
+        public float TheRest { get; set; }
+
         public virtual ICollection<BillItem> BillItems { get; set; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }

@@ -31,7 +31,7 @@ namespace Bills.Controllers
                 
                 return RedirectToAction(nameof(Index),viewModel);
             }
-            var model = context.Bills.Include(b => b.client).Include(b => b.BillDetails).Where(b => b.BillDate >= viewModel.FromDate && b.BillDate <= viewModel.ToDate).ToList();
+            var model = context.Bills.Include(b => b.client).Where(b => b.BillDate >= viewModel.FromDate && b.BillDate <= viewModel.ToDate).ToList();
 
             return PartialView(model);
         }

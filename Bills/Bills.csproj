@@ -42,6 +42,8 @@
 
   <ItemGroup>
     <None Include="Views\Clients\Create.cshtml" />
+    <None Include="Views\Reports\Create.cshtml" />
+    <None Include="Views\Reports\Index.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_StyleLogin.cshtml" />

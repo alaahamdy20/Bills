@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace Bills.Models.Entities
 {
@@ -48,7 +50,9 @@ namespace Bills.Models.Entities
         [Range(1, int.MaxValue, ErrorMessage = "Balance of the first duration Must be Greater than Zero")]
         public int BalanceOfTheFirstDuration { get; set; }
 
+        [JsonIgnore]
         public virtual CompanyData CompanyData { get; set; }
+        [JsonIgnore]
         public virtual TypeData TypeData { get; set; }
 
         public virtual Unit Unit { get; set; }

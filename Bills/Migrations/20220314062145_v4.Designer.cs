@@ -4,14 +4,16 @@ using Bills.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bills.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220314062145_v4")]
+    partial class v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,26 +29,26 @@ namespace Bills.Migrations
                     b.Property<DateTime>("BillDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("BillsTotal")
-                        .HasColumnType("real");
+                    b.Property<int>("BillsTotal")
+                        .HasColumnType("int");
 
                     b.Property<int>("ClintId")
                         .HasColumnType("int");
 
-                    b.Property<float>("PaidUp")
-                        .HasColumnType("real");
+                    b.Property<int>("PaidUp")
+                        .HasColumnType("int");
 
-                    b.Property<float>("PercentageDiscount")
-                        .HasColumnType("real");
+                    b.Property<int>("PercentageDiscount")
+                        .HasColumnType("int");
 
-                    b.Property<float>("TheNet")
-                        .HasColumnType("real");
+                    b.Property<int>("TheNet")
+                        .HasColumnType("int");
 
-                    b.Property<float>("TheRest")
-                        .HasColumnType("real");
+                    b.Property<int>("TheRest")
+                        .HasColumnType("int");
 
-                    b.Property<float>("ValueDiscount")
-                        .HasColumnType("real");
+                    b.Property<int>("ValueDiscount")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
