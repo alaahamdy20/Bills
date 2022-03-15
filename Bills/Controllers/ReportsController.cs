@@ -22,18 +22,17 @@ namespace Bills.Controllers
             return View();
         }
 
-     /*   [HttpPost]
-        [ValidateAntiForgeryToken]*/
+        [HttpPost]
         public async Task<IActionResult> Create(ReportViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
             {
+                if (!ModelState.IsValid)
+                {
                 
-                return RedirectToAction(nameof(Index),viewModel);
-            }
-            var model = context.Bills.Include(b => b.client).Where(b => b.BillDate >= viewModel.FromDate && b.BillDate <= viewModel.ToDate).ToList();
+                    return RedirectToAction(nameof(Index),viewModel);
+                }
+                var model = context.Bills.Where(b => b.BillDate >= viewModel.FromDate && b.BillDate < viewModel.ToDate).ToList();
 
-            return PartialView(model);
-        }
+                return PartialView(model);
+            }
     }
 }

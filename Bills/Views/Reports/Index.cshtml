@@ -81,6 +81,7 @@
 	await Html.RenderPartialAsync("_ValidationScriptsPartial");
 	}
 	<script>
+
 	$('#btnSubmit').click(function () {
                 if ($("#UserForm").valid()) { //check if form is valid using model annotation
                     $('#UserForm').submit(); 
@@ -94,26 +95,26 @@
                 event.preventDefault();
                 $('#btnSubmit').attr('disabled', 'disabled');
                 var url = $(this).attr("action");
-                var formData = $(this).serialize();
+                var formData = {"FromDate":$('#FromDate').val(),"ToDate":$('#ToDate').val()};
+				console.log(formData);
+				
+
                 $.ajax({
                     url: url,
                     type: "POST",
                     data: formData,
-					contentType: "application/json; charset=utf-8",
                     success: function (response) {  
-						//alert('Success! ' + JSON.stringify(response));
-						//console.log(response)
-						 $("#layouts").html(response)
+						$("#layouts").html(response);
                     },
                     error: function (response) {
                         alert('Error!' + response);
-						console.log(response)
+						console.log(response);
 
                     },
                     complete: function () {
                         $('#btnSubmit').removeAttr('disabled');
                     }
-                })
+                });
             });
         
 	</script>
