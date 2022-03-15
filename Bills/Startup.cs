@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bills.Repository;
+using BillItems.Repository;
 
 namespace Bills
 {
@@ -27,12 +29,17 @@ namespace Bills
         {
             services.AddControllersWithViews();
             services.AddSession(s => s.IdleTimeout = TimeSpan.FromDays(2));
-            services.AddDbContext<DatabaseContext>(options => 
-            options.UseSqlServer(Configuration.GetConnectionString("url"))
-             .UseLazyLoadingProxies()
-            );
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("url")).UseLazyLoadingProxies() );
             services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
+            services.AddScoped<IBillItemRepository, BillItemRepository>();
+            services.AddScoped<IBillRepository, BillRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<ITypeRepository, TypeRepository>();
+            services.AddScoped<IUnitRepositroy, UnitRepositroy>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

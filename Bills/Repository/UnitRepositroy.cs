@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 namespace Bills.Repository
 {
-    public class UnitRepositry:IunitRepositroy
+    public class UnitRepositroy:IUnitRepositroy
     {
         public readonly DatabaseContext _context;
-        public UnitRepositry(DatabaseContext context)
+        public UnitRepositroy(DatabaseContext context)
         {
             _context = context;
         }

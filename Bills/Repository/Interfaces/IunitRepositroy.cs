@@ -2,7 +2,7 @@
 
 namespace Bills.Repository
 {
-    public interface IunitRepositroy:IRepository<Unit>
+    public interface IUnitRepositroy:IRepository<Unit>
     {
     }
 }
