@@ -13,102 +13,61 @@ using System.IO;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Bills.Services.Interfaces;
 
 namespace Bills.Controllers
 {
     public class BillsController : Controller
     {
-        private readonly DatabaseContext context;
-        private readonly ICompositeViewEngine _viewEngine;
        
-        public BillsController(DatabaseContext context, ICompositeViewEngine viewEngine)
+        private readonly ICompositeViewEngine _viewEngine;
+        private readonly IItemService _itemService;
+        private readonly IClientService _clientService;
+        private readonly IBillService _billService;
+        public BillsController(IBillService billService, ICompositeViewEngine viewEngine, ICompanyService companyService, ITypeDataService typeDataService, IUnitService unitService, IItemService itemService, IClientService clientService)
         {
-            this.context = context;
             _viewEngine = viewEngine;
+            _itemService = itemService;
+            _clientService = clientService;
+            _billService = billService;
         }
-
 
         public IActionResult Create()
         {
-            ViewData["ClintId"] = new SelectList(context.Clients, "Id", "Name");
-            ViewData["ItemId"] = new SelectList(context.Items, "Id", "Name");
+            ViewData["ClintId"] = new SelectList(_clientService.getAll(), "Id", "Name");
+            ViewData["ItemId"] = new SelectList(_itemService.getAll(), "Id", "Name");
             BillView billView = new BillView();
-            billView.BillId = 1 + context.Bills.Count();
+            billView.BillId = 1 + _billService.getAll().Count();
 
             var str = JsonConvert.SerializeObject(billView);
-            HttpContext.Session.SetString("billItemView", str);
+            HttpContext.Session.SetString("SessionBillView", str);
 
             return View(billView);
         }
 
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult saveDetails(BillView billView) 
+        public IActionResult Create(BillView billView) 
         {
-            var str2 = HttpContext.Session.GetString("billItemView");
-            var billItemViews = JsonConvert.DeserializeObject<BillView>(str2);
+            var str2 = HttpContext.Session.GetString("SessionBillView");
+            var SessionBillView = JsonConvert.DeserializeObject<BillView>(str2);
 
             if (ModelState.IsValid)
             {
                 #region add bill 
-
-                #region create bill 
-                Bill bill = new Bill();
-                bill.BillDate = billItemViews.BillDate;
-                bill.Id = billItemViews.BillId;
-                bill.ClintId=billItemViews.ClintId;
-
-                bill.BillsTotal = (float)billView.BillsTotal;
-                bill.PercentageDiscount=billView.PercentageDiscount;
-                bill.ValueDiscount=billView.ValueDiscount;
-                bill.PaidUp = billView.PaidUp;
-                bill.TheRest=billView.TheRest;
-                bill.TheNet=billView.TheNet;
+                _billService.create(billViewModel: billView, billViewSession: SessionBillView) ;
                 #endregion
-
-                #region add Items to this bill 
-                foreach (BillItemView itemView in  billItemViews.listItemView)
-                {
-                    BillItem billItem = new BillItem();
-                    billItem.billId = bill.Id;
-                    billItem.ItemId = itemView.ItemCode;
-                    billItem.SellingPrice = itemView.SellingPrice;
-                    billItem.Quantity = itemView.Quantity;
-                    billItem.TotalBalance = itemView.TotalBalance;
-                    bill.BillItems.Add(billItem);
-                }
-                #endregion
-
-                #region update Quantity Rest for items
-                foreach (var newQuantity in billItemViews.ItemsQuantity)
-                {
-                    Item item = context.Items.Where(s => s.Id == newQuantity.Key).FirstOrDefault();
-                    item.QuantityRest = newQuantity.Value;
-                    context.Update(item);
-                
-                }
-                #endregion
-
-                context.Add(bill);
-                context.SaveChanges();
-
-                #endregion
-
                 TempData["alert"] = "  the invoice has been sucessfully added";
                 return RedirectToAction("Create", "Bills");
             }
-            billView.listItemView = billItemViews.listItemView;
+            billView.listItemView = SessionBillView.listItemView;
             return View("Create", billView);
         }
 
         #region AJAX method 
-
         public IActionResult showSellingPrice(int id ) 
         {
-           int sellingPrice = context.Items.Where(s => s.Id == id).Select(s => s.SellingPrice).FirstOrDefault();
-            return Json(sellingPrice);
+            return Json(_itemService.getById(id).SellingPrice);
         }
         public IActionResult addToTotal(int price , int qu)
         {
@@ -116,10 +75,10 @@ namespace Bills.Controllers
         }
         public IActionResult addBillItem(BillView billView)
         {
-            BillItemView billItemView = new BillItemView();
-            int itemQuantityRest = context.Items.Where(s => s.Id == billView.ItemCode).Select(s => s.QuantityRest).FirstOrDefault();
-            var str2 = HttpContext.Session.GetString("billItemView");
-            var billItemViews = JsonConvert.DeserializeObject<BillView>(str2);
+            Item item = _itemService.getById(billView.ItemCode);
+            int itemQuantityRest = (item != null) ? item.QuantityRest : 0; 
+            var str2 = HttpContext.Session.GetString("SessionBillView");
+            var SessionBillView = JsonConvert.DeserializeObject<BillView>(str2);
           
             Ajaxvalidation ajaxvalidation = new Ajaxvalidation();
             ajaxvalidation.status = true;
@@ -143,7 +102,7 @@ namespace Bills.Controllers
             else
             {
                 #region check on item Quantity Rest
-                foreach (var restQuantitys in billItemViews.ItemsQuantity)
+                foreach (var restQuantitys in SessionBillView.ItemsQuantity)
                 {
                     if (restQuantitys.Key == billView.ItemCode)
                     {
@@ -171,29 +130,19 @@ namespace Bills.Controllers
 
             else
             {
-                #region add billItemview to listItemView in billView in session 
+                #region add billItemview to listItemView in SessionBillView in session 
                 ajaxvalidation.status = true;
-                ajaxvalidation.BillView = billView;
-             
-                billItemView.ItemCode = billView.ItemCode;
-                billItemView.SellingPrice = billView.SellingPrice;
-                billItemView.Quantity  = billView.Quantity;
-                billItemView.TotalBalance = billView.Quantity * billView.SellingPrice;
-                Item item= context.Items.Where(s => s.Id == billView.ItemCode).FirstOrDefault();
-                billItemView.ItemName = item.Name;
-                billItemView.Unit = item.Unit.Name;
 
-                billItemViews.BillId = billView.BillId;
-                billItemViews.BillDate= billView.BillDate;
-                billItemViews.ClintId = billView.ClintId;
-
-                billItemViews.listItemView.Add(billItemView);
-                billItemViews.ItemsQuantity[billView.ItemCode] = itemQuantityRest - billView.Quantity;
+                SessionBillView.BillId = billView.BillId;
+                SessionBillView.BillDate = billView.BillDate;
+                SessionBillView.ClintId = billView.ClintId;
+                SessionBillView.listItemView.Add(_billService.transferToBillItemView(billView));
+                SessionBillView.ItemsQuantity[billView.ItemCode] = itemQuantityRest - billView.Quantity;
                 #endregion
 
                 #region calc Bills Total
                 int BillsTotal = 0;
-                foreach (BillItemView view in billItemViews.listItemView)
+                foreach (BillItemView view in SessionBillView.listItemView)
                 {
                     BillsTotal += view.TotalBalance;
                 }
@@ -201,19 +150,18 @@ namespace Bills.Controllers
                 #endregion
 
                 #region send partial view as string 
-                PartialViewResult partialViewResult = PartialView("_ItemTable", billItemViews.listItemView);
+                PartialViewResult partialViewResult = PartialView("_ItemTable", SessionBillView.listItemView);
                 string viewContent = ConvertViewToString(this.ControllerContext, partialViewResult, _viewEngine);
                 #endregion
 
                 #region update object in session 
-                  var str = JsonConvert.SerializeObject(billItemViews);
-                  HttpContext.Session.SetString("billItemView", str);
+                  var str = JsonConvert.SerializeObject(SessionBillView);
+                  HttpContext.Session.SetString("SessionBillView", str);
                 #endregion
 
                 return Json(new { billView= billView , viewContent= viewContent });
             }
         }
-
         #endregion
 
         #region Convert View To String
@@ -233,5 +181,7 @@ namespace Bills.Controllers
 
         #endregion
 
+
+       
     }
 }

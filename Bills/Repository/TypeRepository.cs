@@ -31,7 +31,12 @@ namespace Bills.Repository
 			return _context.TypeDatas.ToList();
 		}
 
-		public TypeData GetById(int id)
+        public List<TypeData> getByCompanyId(int companyId)
+        {
+            return _context.CompanyTypes.Where(s => s.CompanyDataId == companyId).Select(s => s.TypeData).ToList();
+		}
+
+        public TypeData GetById(int id)
 		{
 			return _context.TypeDatas.FirstOrDefault(c => c.Id == id);
 			

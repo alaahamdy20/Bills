@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BillItems.Repository
+namespace Bills.Repository
 {
 	public class BillItemRepository : IBillItemRepository
 	{

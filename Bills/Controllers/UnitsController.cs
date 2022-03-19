@@ -7,19 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bills.Models;
 using Bills.Models.Entities;
+using Bills.Services.Interfaces;
 
 namespace Bills.Controllers
 {
     public class UnitsController : Controller
     {
-        private readonly DatabaseContext context;
+        private readonly IUnitService _unitService;
 
-        public UnitsController(DatabaseContext context)
+        public UnitsController( IUnitService unitService)
         {
-            this.context = context;
+            _unitService = unitService;
         }
 
-     
+
+
         public IActionResult Create()
         {
             return View();
@@ -28,12 +30,11 @@ namespace Bills.Controllers
       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Notes")] Unit unit)
+        public IActionResult Create(Unit unit)
         {
             if (ModelState.IsValid)
             {
-                context.Add(unit);
-                await context.SaveChangesAsync();
+               _unitService.create(unit);
                 return RedirectToAction("Create", "Items");
                
             }
@@ -43,16 +44,7 @@ namespace Bills.Controllers
         public IActionResult unitNameUniqe(string Name)
         {
             
-            Unit unit = context.Units.Where(s => s.Name == Name).FirstOrDefault();
-            if (unit != null)
-            {
-                return Json(false);
-
-            }
-            else
-            {
-                return Json(true);
-            }
+           return Json(_unitService.Unique(Name));
 
         }
     }

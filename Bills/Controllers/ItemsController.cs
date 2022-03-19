@@ -7,68 +7,60 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bills.Models;
 using Bills.Models.Entities;
+using Bills.Services.Interfaces;
 
 namespace Bills.Controllers
 {
     public class ItemsController : Controller
     {
-        private readonly DatabaseContext context;
+        private readonly ICompanyService _companyService;
+        private readonly ITypeDataService _typeDataService;
+        private readonly IUnitService _unitService;
+        private readonly IItemService _itemService;
 
-        public ItemsController(DatabaseContext context)
+        public ItemsController(ICompanyService companyService, ITypeDataService typeDataService, IUnitService unitService , IItemService itemService)
         {
-            this.context = context;
+            _companyService = companyService;
+            _typeDataService = typeDataService;
+            _unitService = unitService;
+            _itemService = itemService;
         }
 
-  
+
+
         public IActionResult Create()
         {
-            ViewData["CompanyId"] = new SelectList(context.CompanyDatas, "Id", "Name");
-            ViewData["typeId"] = new SelectList(context.TypeDatas, "Id", "Name");
-            ViewData["unitId"] = new SelectList(context.Units, "Id", "Name");
+            ViewData["CompanyId"] = new SelectList(_companyService.getAll(), "Id", "Name");
+            ViewData["typeId"] = new SelectList(_typeDataService.getAll(), "Id", "Name");
+            ViewData["unitId"] = new SelectList(_unitService.getAll(), "Id", "Name");
             return View();
         }
 
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Item item)
+        public IActionResult Create( Item item)
         {
             if (ModelState.IsValid)
             {
-              
-                
                     item.QuantityRest = item.BalanceOfTheFirstDuration;
-                    context.Add(item);
-                    await context.SaveChangesAsync();
+                   _itemService.create(item);
                     return RedirectToAction("Create", "Clients");
-          
-              
             }
-            ViewData["CompanyId"] = new SelectList(context.CompanyDatas, "Id", "Name", item.CompanyId);
-            ViewData["typeId"] = new SelectList(context.TypeDatas, "Id", "Name");
-            ViewData["unitId"] = new SelectList(context.Units, "Id", "Name");
+            ViewData["CompanyId"] = new SelectList(_companyService.getAll(), "Id", "Name");
+            ViewData["typeId"] = new SelectList(_typeDataService.getAll(), "Id", "Name");
+            ViewData["unitId"] = new SelectList(_unitService.getAll(), "Id", "Name");
             return View(item);
         }
         public IActionResult ItemNameUniqe(string Name , int CompanyId)
         {
 
-            Item item  = context.Items.Where(s => s.Name == Name).FirstOrDefault();
-            //Item item = context.Items.Where(s => s.Name == Name && s.CompanyId== CompanyId).FirstOrDefault(); // if he need validation on buth item and company 
-            if (item != null)
-            {
-                return Json(false);
-
-            }
-            else
-            {
-                return Json(true);
-            }
+            return Json(_itemService.Unique(Name));
 
         }
 
         #region AJAX method
         public IActionResult UpdateSelector(int id ) {
-           List<TypeData> typeDatas = context.CompanyTypes.Where(s => s.CompanyDataId==id).Select(s=>s.TypeData).ToList();
+            List<TypeData> typeDatas = _typeDataService.getByCompanyId(id);
             return Json(typeDatas);
         }
         #endregion

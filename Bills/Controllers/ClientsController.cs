@@ -7,35 +7,44 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bills.Models;
 using Bills.Models.Entities;
+using Bills.Services.Interfaces;
 
 namespace Bills.Controllers
 {
     public class ClientsController : Controller
     {
-        private readonly DatabaseContext context;
 
-        public ClientsController(DatabaseContext context)
+        private readonly ICompanyService _companyService;
+        private readonly ITypeDataService _typeDataService;
+        private readonly IUnitService _unitService;
+        private readonly IItemService _itemService;
+        private readonly IClientService _clientService;
+
+
+        public ClientsController(ICompanyService companyService, ITypeDataService typeDataService, IUnitService unitService, IItemService itemService, IClientService clientService)
         {
-            this.context = context;
+            _companyService = companyService;
+            _typeDataService = typeDataService;
+            _unitService = unitService;
+            _itemService = itemService;
+            _clientService = clientService;
         }
-
         public IActionResult Create()
         {
             Client client = new Client();
-            client.Id = 1+context.Clients.Count();
+            client.Id = 1+_clientService.getAll().Count();
             return View(client);
         }
 
       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Client client)
+        public IActionResult Create(Client client)
         {
             if (ModelState.IsValid)
             {
-                client.Id = 1 + context.Clients.Count();
-                context.Add(client);
-                await context.SaveChangesAsync();
+                client.Id = 1 + _clientService.getAll().Count();
+               _clientService.create(client);
                 TempData["alert"] = "  Client added successfully";
                 return RedirectToAction("Create", "Clients");
             }
@@ -45,16 +54,7 @@ namespace Bills.Controllers
         public IActionResult ClientNameUniqe (string Name)
         {
 
-            Client  client = context.Clients.Where(s => s.Name == Name).FirstOrDefault();
-            if (client != null)
-            {
-                return Json(false);
-
-            }
-            else
-            {
-                return Json(true);
-            }
+        return Json(_clientService.Unique(Name));
 
         }
     }

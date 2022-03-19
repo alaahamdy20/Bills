@@ -8,22 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using Bills.Models;
 using Bills.Models.Entities;
 using Bills.Models.ModelView;
+using Bills.Services.Interfaces;
 
 namespace Bills.Controllers
 {
     public class TypeDatasController : Controller
     {
-        private readonly DatabaseContext context;
+        private readonly ICompanyService _companyService;
+        private readonly ITypeDataService _typeDataService;
 
-        public TypeDatasController(DatabaseContext context)
+        public TypeDatasController(ICompanyService companyService, ITypeDataService typeDataService)
         {
-            this.context = context;
+            _companyService = companyService;
+            _typeDataService = typeDataService;
         }
 
       
         public IActionResult Create()
         {
-            SelectList companysList = new SelectList(context.CompanyDatas.ToList(), "Id", "Name");
+            SelectList companysList = new SelectList(_companyService.getAll(), "Id", "Name");
             ViewData["companys"]= companysList;
             return View(new TypeView());
         }
@@ -37,52 +40,21 @@ namespace Bills.Controllers
             {
                 if (typeView.CompanyId == 0)
                 {
-
                     ModelState.AddModelError("CompanyId", "COMPANY NAME is Required");
-
                 }
                 else
                 {
-                    TypeData OldtypeData = context.TypeDatas.Where(s => s.Name == typeView.Name).SingleOrDefault();
-                    if (OldtypeData == null)
-                    {
-                        TypeData typeData = new TypeData();
-                        typeData.Name = typeView.Name;
-                        typeData.Notes = typeView.Notes;
-                        context.Add(typeData);
-                        context.SaveChanges();
-
-
-                    }
-                    TypeData NewTypeData = context.TypeDatas.Where(s => s.Name == typeView.Name).SingleOrDefault();
-                        CompanyType companyType = new CompanyType();
-                        companyType.CompanyDataId = typeView.CompanyId;
-                        companyType.TypeDataId = NewTypeData.Id;
-                        context.CompanyTypes.Add(companyType);
-                        context.SaveChanges();
-                 
-
+                    _typeDataService.create(typeView);
                     return RedirectToAction("Create", "Units");
                 }
             }
-            SelectList companysList = new SelectList(context.CompanyDatas.ToList(), "Id", "Name");
+            SelectList companysList = new SelectList(_companyService.getAll(), "Id", "Name");
             ViewData["companys"] = companysList;
             return View(typeView);
         }
 
         public IActionResult TypeNameUniqe(string Name ,int  CompanyId) {
-            int typeDataID = context.TypeDatas.Where(s=>s.Name==Name).Select(s=>s.Id).SingleOrDefault();
-            CompanyType companyType = context.CompanyTypes.Where(s=>s.TypeDataId==typeDataID && s.CompanyDataId==CompanyId).FirstOrDefault();
-            if (companyType != null )
-            {
-                return Json(false);
-               
-            }
-            else
-            {
-                return Json(true);
-            }
-
+            return Json(_typeDataService.Unique(Name,CompanyId));
         }
 
 

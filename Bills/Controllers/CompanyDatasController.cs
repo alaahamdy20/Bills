@@ -7,15 +7,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bills.Models;
 using Bills.Models.Entities;
+using Bills.Services.Interfaces;
+using Bills.Services;
 
 namespace Bills.Controllers
 {
     public class CompanyDatasController : Controller
     {
-        private readonly DatabaseContext context;
+        private readonly ICompanyService _companyService;
 
-        public CompanyDatasController(DatabaseContext _context) { 
-        context = _context;
+        public CompanyDatasController(ICompanyService companyService) {
+            _companyService = companyService;
         
         }
 
@@ -29,32 +31,23 @@ namespace Bills.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( CompanyData companyData)
+        public IActionResult Create( CompanyData companyData)
         {
             if (ModelState.IsValid)
             {
-                context.Add(companyData);
-                await context.SaveChangesAsync();
+                _companyService.create(companyData);
                 return RedirectToAction("Create", "TypeDatas");
             }
             return View(companyData);
         }
         
-              public IActionResult CompanyNameUniqe(string Name)
-        {
+        public IActionResult CompanyNameUniqe(string Name)
+            {
           
-            CompanyData companyData = context.CompanyDatas.Where(s => s.Name == Name).FirstOrDefault();
-            if (companyData != null)
-            {
-                return Json(false);
+               return Json( _companyService.Unique(Name));
+           
 
             }
-            else
-            {
-                return Json(true);
-            }
-
-        }
 
 
 
