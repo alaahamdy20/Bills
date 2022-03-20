@@ -16,7 +16,7 @@ namespace Bills.Models.Entities
         public string Name { get; set; }
 
         [Required(ErrorMessage = " Phone is Required ")]
-        [RegularExpression("^[0-9]{10,14}$" ,ErrorMessage =" Please enter your phone number  ")]
+        [RegularExpression("^[0-9]{14}$" ,ErrorMessage =" Please enter your phone number  ")]
         [Display(Name = "Phone :")]
         public int Phone { get; set; }
 

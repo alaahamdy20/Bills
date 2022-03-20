@@ -23,7 +23,7 @@ namespace Bills.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ReportViewModel viewModel)
+        public IActionResult Create(ReportViewModel viewModel)
             {
                 if (!ModelState.IsValid)
                 {

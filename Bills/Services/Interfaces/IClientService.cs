@@ -9,5 +9,6 @@ namespace Bills.Services.Interfaces
 
         public List<Client> getAll();
         public int create(Client client);
+        Client getById(int id);
     }
 }

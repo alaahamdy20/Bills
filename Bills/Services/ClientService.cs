@@ -24,6 +24,11 @@ namespace Bills.Services
          return _clientRepository.GetAll();  
         }
 
+        public Client getById(int id)
+        {
+           return _clientRepository.GetById(id);
+        }
+
         public bool Unique(string Name)
         {
             Client client = _clientRepository.GetByName(Name);

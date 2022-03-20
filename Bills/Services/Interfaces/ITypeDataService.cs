@@ -8,6 +8,7 @@ namespace Bills.Services.Interfaces
     {
 
         public List<TypeData> getAll();
+        public TypeData getById(int id);
         public List<TypeData> getByCompanyId(int companyId);
         public int create(TypeView typeView);
 

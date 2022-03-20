@@ -22,6 +22,10 @@ namespace Bills.Services
         {
            return _companyRepository.GetAll();
         }
+        public CompanyData getById(int id )
+        {
+            return _companyRepository.GetById(id);
+        }
 
         public bool Unique(string Name)
         {

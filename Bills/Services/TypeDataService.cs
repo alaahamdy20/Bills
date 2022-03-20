@@ -58,5 +58,9 @@ namespace Bills.Services
         {
           return _typeRepository.getByCompanyId(companyId);
         }
+        public TypeData getById(int id)
+        { 
+        return _typeRepository.GetById(id);
+        }
     }
 }

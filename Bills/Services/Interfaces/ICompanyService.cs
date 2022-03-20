@@ -8,7 +8,8 @@ namespace Bills.Services.Interfaces
         public bool Unique( string Name);
 
         public List<CompanyData> getAll();
-        public int create(CompanyData companyData); 
+        public int create(CompanyData companyData);
+        public CompanyData getById(int id);
 
 
     }

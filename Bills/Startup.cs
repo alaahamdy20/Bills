@@ -10,7 +10,7 @@ using System;
 using Bills.Repository;
 using Bills.Services.Interfaces;
 using Bills.Services;
-
+using Bills.Models.ModelView;
 
 namespace Bills
 {
@@ -29,7 +29,7 @@ namespace Bills
         {
             services.AddControllersWithViews();
             services.AddSession(s => s.IdleTimeout = TimeSpan.FromDays(2));
-            services.AddDbContext<DatabaseContext>(options => 
+            services.AddDbContext<DatabaseContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("url")).UseLazyLoadingProxies());
             services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
@@ -65,8 +65,8 @@ namespace Bills
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IBillService, BillService>();
             #endregion
-            
-          
+            // services.AddScoped(typeof(ApiModel<>));
+            services.AddScoped<ApiModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,12 +83,16 @@ namespace Bills
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthorization();
-            app.UseSession();
             app.UseOpenApi();
             app.UseSwaggerUi3();
             app.UseCors(MyAllowSpecificOrigins);
+
+            app.UseAuthorization();
+            app.UseAuthorization();
+
+            app.UseSession();
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

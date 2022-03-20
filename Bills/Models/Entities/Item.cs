@@ -54,9 +54,9 @@ namespace Bills.Models.Entities
         public virtual CompanyData CompanyData { get; set; }
         [JsonIgnore]
         public virtual TypeData TypeData { get; set; }
-
+        [JsonIgnore]
         public virtual Unit Unit { get; set; }
-
+        
         public int QuantityRest { get; set; }
 
 
