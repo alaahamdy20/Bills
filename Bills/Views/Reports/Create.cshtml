@@ -19,12 +19,15 @@
                                          <table class="table table-bordered table-striped">
                                                         <thead>
                                                             <tr style="text-align: center;" >
-                                                                <th> Item Code</th>
-                                                                <th>Item name</th>
-                                                                <th>Unit</th>
-                                                                <th>Quantity</th>
-                                                                <th>Selling Price</th>
-                                                                <th>Total Balance</th>
+                                                                <th> Bill Number</th>
+                                                                <th>Bill date</th>
+                                                                <th>Clint name</th>
+                                                                <th>Total Bill</th>
+                                                                <th>Value discount</th>
+                                                                <th>The net</th>
+                                                                <th>Paid up</th>
+                                                                <th>The rest</th>
+                                                              
 
                                                             </tr>
                                                         </thead>
@@ -36,11 +39,13 @@
 	                                                                <tr>
 
 		                                                                <td>@item.Id     </td >
-                                                                        <td>@item.ClintId     </td >
-		                                                                <td>@item.Id </td >
-                                                                        <td>@item.client?.Name     </td >
-                                                                        <td>@item.TheRest    </td >
-                                                                        <td>@item.BillsTotal     </td >
+                                                                        <td>@item.BillDate     </td >
+		                                                                <td>@item.client.Name </td >
+                                                                        <td>@item.BillsTotal    </td >
+                                                                        <td>@item.ValueDiscount    </td >
+                                                                        <td>@item.TheNet     </td >
+                                                                        <td>@item.PaidUp    </td >
+                                                                        <td>@item.TheRest     </td >
                                                                     </tr>
                                                               
                                                                 }

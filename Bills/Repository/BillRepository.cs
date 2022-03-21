@@ -1,6 +1,6 @@
 ﻿using Bills.Models;
 using Bills.Models.Entities;
-using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,6 +34,11 @@ namespace Bills.Repository
 		public Bill GetById(int id)
 		{
 			return _context.Bills.FirstOrDefault(c => c.Id == id);
+
+		}
+		public List<Bill> GetByDate(DateTime from ,DateTime to)
+		{
+			return _context.Bills.Where(b => b.BillDate >= from && b.BillDate < to).ToList();
 
 		}
 

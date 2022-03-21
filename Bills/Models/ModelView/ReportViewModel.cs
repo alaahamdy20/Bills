@@ -8,7 +8,7 @@ namespace Bills.Models.ModelView
     {
         [Required]
         public DateTime FromDate { get; set; }
-        [Required]
-        public DateTime ToDate { get; set; }
+       
+        public DateTime? ToDate { get; set; }
     }
 }

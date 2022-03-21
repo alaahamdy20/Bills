@@ -1,5 +1,6 @@
 ﻿using Bills.Models;
 using Bills.Models.ModelView;
+using Bills.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -8,11 +9,11 @@ namespace Bills.Controllers
 {
     public class ReportsController : Controller
     {
-        private readonly DatabaseContext context;
+        private readonly IReportService _reportService;
 
-        public ReportsController(DatabaseContext context)
+        public ReportsController(IReportService reportService)
         {
-            this.context = context;
+          _reportService = reportService;
         }
         public IActionResult Index()
         {
@@ -28,7 +29,8 @@ namespace Bills.Controllers
                 
                     return RedirectToAction(nameof(Index),viewModel);
                 }
-                var model = context.Bills.Where(b => b.BillDate >= viewModel.FromDate && b.BillDate < viewModel.ToDate).ToList();
+            if (viewModel.ToDate==null) { viewModel.ToDate = System.DateTime.Now; }
+                var model = _reportService.GetByDate(viewModel.FromDate, (System.DateTime)viewModel.ToDate);
 
                 return PartialView(model);
             }
