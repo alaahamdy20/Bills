@@ -38,9 +38,12 @@ namespace Bills.Repository
 
 		}
 
+        public List<BillItem> MoreDetails(int id)
+        {
+			return _context.BillItems.Where(s => s.ItemId == id).Include(s=>s.bill).ToList();
+		}
 
-
-		public int Update(int id, BillItem newBillItem)
+        public int Update(int id, BillItem newBillItem)
 		{
 
 			var entry = _context.Entry(newBillItem);

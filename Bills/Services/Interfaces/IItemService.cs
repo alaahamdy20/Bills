@@ -12,7 +12,7 @@ namespace Bills.Services.Interfaces
         public int create(Item item);
 
         public Item getById (int id);
-
-   
+        public List<Item> search(string search);
+     
     }
 }

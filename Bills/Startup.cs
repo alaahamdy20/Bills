@@ -64,7 +64,8 @@ namespace Bills
             services.AddScoped<IItemService, ItemService>();
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IBillService, BillService>();
-            services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IReportService, ReportService>(); 
+                services.AddScoped<IBillItemService, BillItemService>();
             #endregion
             // services.AddScoped(typeof(ApiModel<>));
             services.AddScoped<ApiModel>();

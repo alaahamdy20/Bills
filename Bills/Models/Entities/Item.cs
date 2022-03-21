@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -58,6 +59,8 @@ namespace Bills.Models.Entities
         public virtual Unit Unit { get; set; }
         
         public int QuantityRest { get; set; }
+        [JsonIgnore]
+        public DateTime EntryDate { get; set; }
 
 
 

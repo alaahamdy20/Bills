@@ -1,9 +1,9 @@
 ﻿using Bills.Models.Entities;
 using System.Collections.Generic;
 
-namespace Bills.Repository
+namespace Bills.Services.Interfaces
 {
-    public interface IBillItemRepository : IRepository<BillItem>
+    public interface IBillItemService
     {
         List<BillItem> MoreDetails(int id);
     }

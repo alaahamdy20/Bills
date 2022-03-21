@@ -1,0 +1,117 @@
+﻿@model List<Item> 
+<section id="horizontal-form-layouts">
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-title-wrap bar-success">
+						<h4 class="card-title" id="horz-layout-basic">Items	 Report </h4>
+					</div>
+					<p class="mb-0">This is the basic horizontal form with labels on left and cost estimation form is the default position.</p>
+				</div>
+				<div class="card-body">
+					<div class="px-3">
+						
+							<div class="form-group row">
+								<label class="col-md-2 h4 label-control" style="font-weight: bolder" for="search"> Search :</label>
+								<div class="col-md-10">
+									<input name="search" class="form-control" id="search" onkeyup="getItems(this)">
+									<span name="search" class="text-danger" id="searchSpan"></span>
+								</div>
+							</div>
+							
+						  <div class="form-actions">
+							
+							</div>
+
+			
+					 <div class="row">
+                         
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title-wrap bar-success">
+                                               <h4 class="form-section" style="border-bottom: 1px dashed #949090;    line-height: 3rem;    margin-bottom: .5rem;">
+                                                        <i class="icon-user"></i> Bills Items </h4>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="px-3">
+                                         <table class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr style="text-align: center;" >
+                                                                <th>Item Name</th>
+                                                                <th>entry date</th>
+                                                                <th>Company's name</th>
+                                                                <th>type name</th>
+                                                                <th>More Info</th>
+                                                             
+                                                              
+
+                                                            </tr>
+                                                        </thead>
+                                                
+                                                        <tbody id="tableItem">
+                                                            @if (@Model!=null)
+                                                           {
+                                                                <partial name="_Items" model="@Model" ></partial>
+                                                           }
+                                                           
+	                                                       
+                                                        </tbody>
+                                         
+                                                       
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+   </div>
+
+
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+
+
+
+	<script>
+
+	
+        function getItems(el){
+			let search = el.value;
+
+              $.ajax({
+            url: "/ItemReport/Search",
+            data:{"search":search,},
+           // dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function(result){
+             $("#tableItem").html(result);
+            },
+                failure: function (response) {
+                    alert(response.responseText);
+                    console.log(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                    console.log(response.responseText);
+                }
+         
+     
+     });
+	 }
+
+	</script>

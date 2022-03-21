@@ -1,0 +1,22 @@
+﻿@model List<Item> 
+
+    @if (@Model!=null)
+           { 
+               @foreach (Item item in Model )
+                    {
+	                    <tr>
+
+		                    <td>@item.Name    </td >
+                            <td>@item.EntryDate </td >
+                            <td>@item.CompanyData.Name     </td >
+		                    <td>@item.TypeData.Name    </td >
+                            <td> <form asp-action="ItemDetails" asp-controller="ItemReport" >
+                                <input name="id" value=@item.Id hidden>
+                                 <button class="btn btn-success"  type="submit"> more Details </button>
+                            </form>
+                            </td>
+                        </tr>
+                                                              
+                    }
+           }
+                      

@@ -42,6 +42,11 @@ namespace Bills.Repository
 			return _context.Items.Include(c => c.TypeData).FirstOrDefault(c => c.Name.ToLower() == Name);
 
 		}
+		public List<Item> search(string Name)
+		{
+			return _context.Items.Where(s => s.Name.Contains(Name)).ToList();
+
+		}
 
 		public int Update(int id, Item newItem)
 		{

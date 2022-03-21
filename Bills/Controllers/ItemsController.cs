@@ -43,6 +43,7 @@ namespace Bills.Controllers
             if (ModelState.IsValid)
             {
                     item.QuantityRest = item.BalanceOfTheFirstDuration;
+                    item.EntryDate = DateTime.Now;
                    _itemService.create(item);
                     return RedirectToAction("Create", "Clients");
             }
