@@ -1,0 +1,133 @@
+﻿@model List<ItemReportViewModel>
+@{
+    ViewData["Title"] = "ItemsReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section id="horizontal-form-layouts">
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-title-wrap bar-success">
+						<h4 class="card-title" id="horz-layout-basic">Items inventory </h4>
+					</div>
+					<p class="mb-0">This is the basic horizontal form with labels on left and cost estimation form is the default position.</p>
+				</div>
+				<div class="card-body">
+					<div class="px-3">
+					 <div class="row">
+                         
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title-wrap bar-success">
+                                               <h4 class="form-section" style="    line-height: 3rem;    margin-bottom: .5rem;">
+                                                      <i class="icon-layers"></i> Items </h4>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="px-3">
+                               <table class="table table-stripped table-hover "> <thead>
+                                                <tr>
+                                                    <th>Name </th>
+                                                    <th>Total </th>
+                                                    <th>in stock</th>
+                                                     <th>sold</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                        <tr> <td>@item.name </td> <td>@item.total</td><td>@item.instock</td> <td>@(item.total-item.instock)</td></tr>
+                                             }
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+   </div>
+
+
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $.ajax({
+                type: 'GET',
+                dataType: "json",
+                contentType: "application/json",
+                url: '/Reports/PopulationChart',
+                success: function (result) {
+                    google.charts.load('current', {
+                        'packages': ['corechart']
+                    });
+                    google.charts.setOnLoadCallback(function () {
+                        drawChart(result);
+                    });
+                }
+            });
+
+            function drawChart(result) {
+
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'name');
+                data.addColumn('number', 'Quantity');
+                data.addColumn('number', 'Instock');
+                var dataArray = [];
+                $.each(result, function (i, obj) {
+                    dataArray.push([obj.name, obj.total,obj.instock]);
+                });
+
+                data.addRows(dataArray);
+
+                var piechart_options = {
+                    title: 'items percentages ',
+                    width: 400,
+                    height: 300
+                };
+                var piechart = new google.visualization.PieChart(document
+                    .getElementById('piechart_div'));
+                piechart.draw(data, piechart_options);
+
+                var barchart_options = {
+                    title: 'total quantity and instock',
+                    width: 400,
+                    height: 300,
+                    legend: 'none'
+                };
+                var barchart = new google.visualization.BarChart(document
+                    .getElementById('barchart_div'));
+                barchart.draw(data, barchart_options);
+            }
+
+
+        });
+
+    </script>
+
+
+    <h3> Chart </h3>
+    <table class="columns">
+        <tr>
+           @* <td><div id="piechart_div" style="border: 1px solid #ccc"></div></td>*@
+            <td><div id="barchart_div" style="border: 1px solid #ccc"></div></td>
+        </tr>
+    </table>

@@ -1,4 +1,5 @@
 ﻿using Bills.Models.Entities;
+using Bills.Models.ModelView;
 using Bills.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace Bills.Controllers
             _billItemService = billItemService;
             _itemService = itemService;
         }
+        
+
         public IActionResult Index()
         {
             return View("searchItem" ,_itemService.getAll().Take(10).ToList());
@@ -34,6 +37,16 @@ namespace Bills.Controllers
             ViewData["itemData"] = _itemService.getById(id);
             List < BillItem > itemDetais = _billItemService.MoreDetails(id);
            return View("ItemDetails", _billItemService.MoreDetails(id));
+        }
+        public IActionResult ItemsInventory()
+        {
+            List<ItemReportViewModel> items = _itemService.getAll().Select(x => new ItemReportViewModel()
+            {
+                name = x.Name,
+                total = x.BalanceOfTheFirstDuration,
+                instock = x.QuantityRest
+            }).ToList();
+            return View("ItemsInventory", items);
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Bills.Models;
+using Bills.Models.Entities;
 using Bills.Models.ModelView;
 using Bills.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 
 
@@ -34,5 +36,8 @@ namespace Bills.Controllers
 
                 return PartialView(model);
             }
+
+      
+
     }
 }
