@@ -7,6 +7,7 @@ namespace Bills.Models.ModelView
     {
         [Required(ErrorMessage = " COMPANY NAME is Required ")]
         [Display(Name = "COMPANY NAME")]
+        [Remote(action: "RequiredCompany", controller: "Items", ErrorMessage = "COMPANY NAME is Required")]
         public int CompanyId { get; set; }
 
         [Required(ErrorMessage = " TYPE NAME is Required ")]

@@ -41,7 +41,10 @@ namespace Bills.Services
 
         public bool Unique(string Name , int CompanyId)
         {
-            int typeDataID = _typeRepository.GetByName(Name).Id;
+            int typeDataID = 0;
+            TypeData typeData = _typeRepository.GetByName(Name);
+            if (typeData != null)
+            { typeDataID = typeData.Id;  }
             CompanyType companyType = _CompanyTypeRepository.getByIds(CompanyId, typeDataID);
             if (companyType != null)
             {

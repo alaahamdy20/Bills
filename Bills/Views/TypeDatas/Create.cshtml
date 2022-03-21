@@ -26,9 +26,10 @@
                                                                 <select class="form-control mt-2" asp-for="CompanyId"  asp-items="ViewBag.companys"  >
                                                                          <option value="0" selected >Select Company</option>
                                                                 </select>
+                                                                   <span asp-validation-for="CompanyId" class="text-danger"></span>
                                                                
                                                            }
-                                                            <span asp-validation-for="CompanyId" class="text-danger"></span>
+                                                         
                                                     </div>
                                                 </div>
                                            

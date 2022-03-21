@@ -38,15 +38,9 @@ namespace Bills.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (typeView.CompanyId == 0)
-                {
-                    ModelState.AddModelError("CompanyId", "COMPANY NAME is Required");
-                }
-                else
-                {
-                    _typeDataService.create(typeView);
-                    return RedirectToAction("Create", "Units");
-                }
+                _typeDataService.create(typeView);
+                return RedirectToAction("Create", "Units");
+              
             }
             SelectList companysList = new SelectList(_companyService.getAll(), "Id", "Name");
             ViewData["companys"] = companysList;

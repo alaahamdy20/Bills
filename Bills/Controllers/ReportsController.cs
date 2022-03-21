@@ -1,10 +1,8 @@
 ﻿using Bills.Models;
 using Bills.Models.ModelView;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Bills.Controllers
 {
