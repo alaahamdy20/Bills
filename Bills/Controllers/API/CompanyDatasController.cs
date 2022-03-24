@@ -49,7 +49,7 @@ namespace Bills.Controllers.API
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         [ProducesResponseType(typeof(IEnumerable<ApiModel>), 201)]
         public IActionResult Company( CompanyData companyData)
         {

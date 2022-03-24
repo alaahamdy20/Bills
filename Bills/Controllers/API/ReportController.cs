@@ -12,13 +12,13 @@ namespace Bills.Controllers.API
     {
         public readonly ApiModel _apiModel;
         private readonly IItemService _itemService;
-        private readonly IBillItemService _billItemService;
 
-        public ReportController(IItemService itemService, ApiModel apiModel , IBillItemService billItemService) 
+
+        public ReportController(IItemService itemService, ApiModel apiModel ) 
         {
             _apiModel = apiModel;
             _itemService = itemService;
-            _billItemService = billItemService;
+   
         }
         public IActionResult Item()
         {
