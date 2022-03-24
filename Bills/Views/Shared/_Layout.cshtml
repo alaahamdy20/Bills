@@ -1,4 +1,8 @@
-﻿
+﻿@{
+    string currentController = ViewContext.RouteData.Values["Controller"].ToString().ToLower();
+    string currentAction = ViewContext.RouteData.Values["Action"].ToString().ToLower();
+}
+
 <!DOCTYPE html>
 <html lang="en" class="loading">
    <head>
@@ -26,6 +30,7 @@
      
    </head>
    <body data-col="2-columns" class=" 2-columns ">
+       
       <div class="wrapper">
          <div data-active-color="white" data-background-color="white" class="app-sidebar">
             <div class="sidebar-header">
@@ -41,33 +46,33 @@
             <div class="sidebar-content">
                <div class="nav-container">
                   <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
-                     <li class="nav-item home"><a asp-action="Index" asp-controller="Home"><i class="icon-home"></i>
-                         <span data-i18n=""class="menu-title">Home Page </span></a>
+                     <li class="nav-item @((currentAction=="index" && currentController=="home") ? "home": "")"><a asp-action="Index" asp-controller="Home"><i class="icon-home" ></i>
+                         <span data-i18n=""class="menu-title" >Home Page </span></a>
                      </li>
   
-                     <li class=" nav-item"><a asp-action="Create" asp-controller="CompanyDatas"><i class="icon-note"></i><span data-i18n="" class="menu-title">Company Data</span></a>
+                     <li class=" nav-item @((currentAction=="create" && currentController=="companydatas") ? "home": "") "><a asp-action="Create" asp-controller="CompanyDatas"><i class="icon-note"></i><span data-i18n="" class="menu-title">Company Data</span></a>
                      </li>
-                     <li class=" nav-item"><a asp-action="Create" asp-controller="TypeDatas"><i class="icon-pie-chart"></i><span data-i18n="" class="menu-title">
+                     <li class=" nav-item @((currentAction=="create" && currentController=="typedatas") ? "home": "")  "><a  asp-action="Create" asp-controller="TypeDatas"><i class="icon-pie-chart"></i><span data-i18n="" class="menu-title">
                        Types </span></a>
                      </li>
-                     <li class=" nav-item"><a asp-action="Create" asp-controller="Units"><i class="icon-support"></i><span data-i18n="" class="menu-title">
+                     <li class=" nav-item @((currentAction=="create" && currentController=="units") ? "home": "") "><a asp-action="Create" asp-controller="Units"><i class="icon-support"></i><span data-i18n="" class="menu-title">
                        All Units</span></a>
                      </li>
-                     <li class=" nav-item"><a asp-action="Create" asp-controller="Items"><i class="icon-layers"></i><span data-i18n="" 
+                     <li class=" nav-item @((currentAction=="create" && currentController=="items") ? "home": "") "><a asp-action="Create" asp-controller="Items"><i class="icon-layers"></i><span data-i18n="" 
                         class="menu-title">Items</span></a>
                      </li>
-                     <li class=" nav-item"><a asp-action="Create" asp-controller="Clients"><i class="icon-users"></i><span data-i18n="" class="menu-title">Clients</span></a>
+                     <li class=" nav-item @((currentAction=="create" && currentController=="clients") ? "home": "") "><a asp-action="Create" asp-controller="Clients"><i class="icon-users"></i><span data-i18n="" class="menu-title">Clients</span></a>
                      </li>
-                     <li class=" nav-item"><a asp-action="Create" asp-controller="Bills"><i class="icon-equalizer"></i><span data-i18n="" class="menu-title">sales invoice
+                     <li class=" nav-item @((currentAction=="create" && currentController=="bills") ? "home": "") "><a asp-action="Create" asp-controller="Bills"><i class="icon-equalizer"></i><span data-i18n="" class="menu-title">sales invoice
                      </span></a>
                      </li>
-                     <li class=" nav-item"><a asp-controller="Reports" asp-action="Index" ><i class="icon-puzzle"></i><span data-i18n="" class="menu-title">Sales Report
+                     <li class=" nav-item @((currentAction=="index" && currentController=="reports") ? "home": "") "><a asp-controller="Reports" asp-action="Index" ><i class="icon-puzzle"></i><span data-i18n="" class="menu-title">Sales Report
                      </span></a>
                      </li>
-                      <li class=" nav-item"><a asp-controller="ItemReport" asp-action="ItemsInventory" ><i class="icon-puzzle"></i><span data-i18n="" class="menu-title">Items inventory
+                      <li class=" nav-item @((currentAction=="itemsinventory" && currentController=="itemreport") ? "home": "") "><a asp-controller="ItemReport" asp-action="ItemsInventory" ><i class="icon-puzzle"></i><span data-i18n="" class="menu-title">Items inventory
                      </span></a>
                      </li>
-                      <li class=" nav-item"><a asp-controller="ItemReport" asp-action="Index" ><i class="icon-puzzle"></i><span data-i18n="" class="menu-title">Items Report
+                      <li class=" nav-item @((currentAction=="index" && currentController=="itemreport") ? "home": "") "><a asp-controller="ItemReport" asp-action="Index" ><i class="icon-puzzle"></i><span data-i18n="" class="menu-title">Items Report
                      </span></a>
                      </li>
                     

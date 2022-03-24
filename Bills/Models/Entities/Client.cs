@@ -19,7 +19,7 @@ namespace Bills.Models.Entities
         [Required(ErrorMessage = " Phone is Required ")]
         [RegularExpression("^[0-9]{10,14}$" ,ErrorMessage =" Please enter your phone number  ")]
         [Display(Name = "Phone :")]
-        public decimal Phone { get; set; }
+        public string Phone { get; set; }
 
         [Required(ErrorMessage = " Address is Required ")]
         [Display(Name = "Address :")]

@@ -68,6 +68,7 @@ namespace Bills.Controllers
         {
             return Json(price*qu);
         }
+  
         public IActionResult AddBillItem(BillView billView)
         {
             Item item = _itemService.getById(billView.ItemCode);

@@ -46,6 +46,7 @@ namespace Bills.Models.ModelView
         public float TheNet { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Paid Up Must be Greater than or equal Zero")]
+       
         public float PaidUp { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Paid Up Must be Greater than or equal Zero")]
