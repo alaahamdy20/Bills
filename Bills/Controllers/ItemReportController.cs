@@ -37,8 +37,7 @@ namespace Bills.Controllers
         
       public IActionResult ItemDetails(int id=1)
         {
-            ViewData["itemData"] = _itemService.getById(id);
-            List < BillItem > itemDetais = _billItemService.MoreDetails(id);
+            ViewData["itemData"] = _itemService.getById(id); 
            return View("ItemDetails", _billItemService.MoreDetails(id));
         }
         public IActionResult ItemsInventory()

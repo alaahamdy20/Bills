@@ -22,7 +22,7 @@ namespace Bills
         }
 
         public IConfiguration Configuration { get; }
-        string MyAllowSpecificOrigins = " ";
+        readonly string MyAllowSpecificOrigins = " ";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)

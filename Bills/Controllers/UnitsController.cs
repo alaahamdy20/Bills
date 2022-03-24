@@ -41,7 +41,7 @@ namespace Bills.Controllers
             return View(unit);
         }
 
-        public IActionResult unitNameUniqe(string Name)
+        public IActionResult UnitNameUniqe(string Name)
         {
             
            return Json(_unitService.Unique(Name));

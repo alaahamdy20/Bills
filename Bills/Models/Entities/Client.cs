@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace Bills.Models.Entities
 {
     public class Client
@@ -16,9 +17,9 @@ namespace Bills.Models.Entities
         public string Name { get; set; }
 
         [Required(ErrorMessage = " Phone is Required ")]
-        [RegularExpression("^[0-9]{14}$" ,ErrorMessage =" Please enter your phone number  ")]
+        [RegularExpression("^[0-9]{10,14}$" ,ErrorMessage =" Please enter your phone number  ")]
         [Display(Name = "Phone :")]
-        public int Phone { get; set; }
+        public decimal Phone { get; set; }
 
         [Required(ErrorMessage = " Address is Required ")]
         [Display(Name = "Address :")]

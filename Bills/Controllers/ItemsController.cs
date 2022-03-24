@@ -52,7 +52,7 @@ namespace Bills.Controllers
             ViewData["unitId"] = new SelectList(_unitService.getAll(), "Id", "Name");
             return View(item);
         }
-        public IActionResult ItemNameUniqe(string Name , int CompanyId)
+        public IActionResult ItemNameUniqe(string Name )
         {
 
             return Json(_itemService.Unique(Name));

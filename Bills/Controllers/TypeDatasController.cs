@@ -26,7 +26,7 @@ namespace Bills.Controllers
       
         public IActionResult Create()
         {
-            SelectList companysList = new SelectList(_companyService.getAll(), "Id", "Name");
+            SelectList companysList = new (_companyService.getAll(), "Id", "Name");
             ViewData["companys"]= companysList;
             return View(new TypeView());
         }
@@ -42,7 +42,7 @@ namespace Bills.Controllers
                 return RedirectToAction("Create", "Units");
               
             }
-            SelectList companysList = new SelectList(_companyService.getAll(), "Id", "Name");
+            SelectList companysList = new (_companyService.getAll(), "Id", "Name");
             ViewData["companys"] = companysList;
             return View(typeView);
         }

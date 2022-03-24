@@ -17,6 +17,7 @@ namespace Bills.Models.Entities
         public string Name { get; set; }
 
         [Range(0,int.MaxValue, ErrorMessage = "SELLING PRICE Must be Greater than or equal Zero")]
+        [Required(ErrorMessage = " SellingPrice is Required, please Enter zero or more  ")]
         [Display(Name = " selling price:")]
         public int SellingPrice { get; set; }
 
@@ -24,6 +25,7 @@ namespace Bills.Models.Entities
         [Range(0, int.MaxValue, ErrorMessage = "BUYING PRICE Must be Greater than or equal Zero")]
         [Remote(action: "BuyingPriceCondition", controller: "Items", AdditionalFields = "SellingPrice", ErrorMessage = "BUYING PRICE Must be less than or equal SELLING PRICE")]
         [Display(Name = " buying Price :")]
+        [Required(ErrorMessage = " buying Price  is Required, please Enter zero or more  ")]
         public int BuyingPrice { get; set; }
 
 

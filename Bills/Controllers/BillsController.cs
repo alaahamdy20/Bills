@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Bills.Models;
 using Bills.Models.Entities;
 using Bills.Models.ModelView;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -24,7 +19,7 @@ namespace Bills.Controllers
         private readonly IItemService _itemService;
         private readonly IClientService _clientService;
         private readonly IBillService _billService;
-        public BillsController(IBillService billService, ICompositeViewEngine viewEngine, ICompanyService companyService, ITypeDataService typeDataService, IUnitService unitService, IItemService itemService, IClientService clientService)
+        public BillsController(IBillService billService, ICompositeViewEngine viewEngine, IItemService itemService, IClientService clientService)
         {
             _viewEngine = viewEngine;
             _itemService = itemService;
@@ -36,8 +31,8 @@ namespace Bills.Controllers
         {
             ViewData["ClintId"] = new SelectList(_clientService.getAll(), "Id", "Name");
             ViewData["ItemId"] = new SelectList(_itemService.getAll(), "Id", "Name");
-            BillView billView = new BillView();
-            billView.BillId = 1 + _billService.getAll().Count();
+            BillView billView = new ();
+            billView.BillId = 1 + _billService.getAll().Count;
 
             var str = JsonConvert.SerializeObject(billView);
             HttpContext.Session.SetString("SessionBillView", str);
@@ -65,22 +60,22 @@ namespace Bills.Controllers
         }
 
         #region AJAX method 
-        public IActionResult showSellingPrice(int id ) 
+        public IActionResult ShowSellingPrice(int id ) 
         {
             return Json(_itemService.getById(id).SellingPrice);
         }
-        public IActionResult addToTotal(int price , int qu)
+        public IActionResult AddToTotal(int price , int qu)
         {
             return Json(price*qu);
         }
-        public IActionResult addBillItem(BillView billView)
+        public IActionResult AddBillItem(BillView billView)
         {
             Item item = _itemService.getById(billView.ItemCode);
             int itemQuantityRest = (item != null) ? item.QuantityRest : 0; 
             var str2 = HttpContext.Session.GetString("SessionBillView");
             var SessionBillView = JsonConvert.DeserializeObject<BillView>(str2);
           
-            Ajaxvalidation ajaxvalidation = new Ajaxvalidation();
+            Ajaxvalidation ajaxvalidation = new ();
             ajaxvalidation.status = true;
 
             #region custom validation using Ajaxvalidation class
@@ -159,24 +154,24 @@ namespace Bills.Controllers
                   HttpContext.Session.SetString("SessionBillView", str);
                 #endregion
 
-                return Json(new { billView= billView , viewContent= viewContent });
+                return Json(new {  billView ,  viewContent });
             }
         }
         #endregion
 
         #region Convert View To String
-        private string ConvertViewToString(ControllerContext controllerContext, PartialViewResult pvr, ICompositeViewEngine _viewEngine)
+        private static string ConvertViewToString(ControllerContext controllerContext, PartialViewResult pvr, ICompositeViewEngine _viewEngine)
         {
-            using (StringWriter writer = new StringWriter())
-            {
+            using StringWriter writer = new ();
+            
                 ViewEngineResult vResult = _viewEngine.FindView(controllerContext, pvr.ViewName, false);
-                ViewContext viewContext = new ViewContext
+                ViewContext viewContext = new 
                     (controllerContext, vResult.View, pvr.ViewData, pvr.TempData, writer, new HtmlHelperOptions());
 
                 vResult.View.RenderAsync(viewContext);
 
                 return writer.GetStringBuilder().ToString();
-            }
+          
         }
 
         #endregion
